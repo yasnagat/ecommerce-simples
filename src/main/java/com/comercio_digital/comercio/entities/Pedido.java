@@ -14,7 +14,7 @@ public class Pedido implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     // a partir do Java 8, usamos Instant em vez de Date
     // formatacao da data no padrao ISO

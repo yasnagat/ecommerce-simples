@@ -3,7 +3,9 @@ package com.comercio_digital.comercio.entities;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="CATEGORIA")
@@ -13,9 +15,11 @@ public class Categoria implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
-
+    private Long id;
     private String nome;
+
+    @Transient
+    private Set<Produto> produtos = new HashSet<>();
 
     // construtores
     public Categoria() {}
@@ -54,5 +58,10 @@ public class Categoria implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hashCode(id);
+    }
+
+
+    public void setProdutos(Set<Produto> produtos) {
+        this.produtos = produtos;
     }
 }
