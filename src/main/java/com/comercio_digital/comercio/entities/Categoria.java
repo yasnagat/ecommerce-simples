@@ -62,7 +62,6 @@ public class Categoria implements Serializable {
         return Objects.hashCode(id);
     }
 
-
     public void setProdutos(Set<Produto> produtos) {
         this.produtos = produtos;
     }

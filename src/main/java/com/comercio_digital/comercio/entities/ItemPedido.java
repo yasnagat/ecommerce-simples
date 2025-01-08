@@ -1,24 +1,21 @@
 package com.comercio_digital.comercio.entities;
 
-import com.comercio_digital.comercio.entities.pk.QuantItensPK;
+import com.comercio_digital.comercio.entities.pk.ItemPedidoPK;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import org.springframework.context.annotation.EnableMBeanExport;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.Objects;
 
 @Entity
 @Table(name = "ITENS_PEDIDO")
 public class ItemPedido implements Serializable {
-    @Serial
     static final long serialVersionUID = 1L;
 
     // usamos a classe PK
     @EmbeddedId
-    private QuantItensPK id;
+    private ItemPedidoPK id = new ItemPedidoPK();
 
     private Integer quantidade;
     private Double preco;
@@ -31,7 +28,7 @@ public class ItemPedido implements Serializable {
         this.quantidade = quantidade;
         this.preco = preco;
     }
-
+    @JsonIgnore
     public Pedido getPedido() {
         return id.getPedido();
     }
@@ -60,17 +57,5 @@ public class ItemPedido implements Serializable {
 
     public void setPreco(Double preco) {
         this.preco = preco;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemPedido that = (ItemPedido) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hashCode(id);
     }
 }

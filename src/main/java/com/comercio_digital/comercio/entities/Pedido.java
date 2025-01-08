@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 public class Pedido implements Serializable {
@@ -22,11 +24,24 @@ public class Pedido implements Serializable {
     private Instant instante;
 
     @ManyToOne
-    @JoinColumn(name = "idCliente")
+    @JoinColumn(name = "id_Cliente")
     private Usuario cliente;
+
+
+
+    @OneToMany(mappedBy = "id.pedido")
+    private Set<ItemPedido> itens = new HashSet<>();
+
+
+    public Set<ItemPedido> getItens() {
+        return itens;
+    }
+
+
 
     public Pedido() {}
     public Pedido(Long id, Instant instante, PedidoStatus status, Usuario cliente) {
+        super();
         this.id = id;
         this.instante = instante;
         setStatus(status);
@@ -81,6 +96,4 @@ public class Pedido implements Serializable {
     public int hashCode() {
         return Objects.hashCode(id);
     }
-
-
 }
