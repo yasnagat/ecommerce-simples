@@ -17,7 +17,11 @@ public class Produto {
     private String imgURL;
 
     // garante que nao teremos um produto com uma categoria repetida
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "CATEGORIA_PRODUTO",
+            joinColumns = @JoinColumn(name = "id_produto"),
+            // define a chave estrangeira da outra entidade
+            inverseJoinColumns = @JoinColumn(name = "id_categoria"))
     private Set<Categoria> categorias = new HashSet<>();
 
     public Produto() {}

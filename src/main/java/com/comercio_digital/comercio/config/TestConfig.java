@@ -47,6 +47,21 @@ public class TestConfig implements CommandLineRunner {
         Produto prod1 = new Produto(null, "Oceano no fim do caminho", "Neil Gaiman", 39.90, "img");
         Produto prod2 = new Produto(null, "Samsung s23", "smartphone", 2500.00, "img");
         Produto prod3 = new Produto(null, "Zephyrus G14 ASUS", "notebook gamer", 15000.00, "img");
+        Produto prod4 = new Produto(null, "Bem vindos à livraria hyunam-dong", "livro", 40.00, "img");
+
+
+        categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
+        produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
+
+        // vamos relacionar os produtos às categorias - relacao manytomany
+        prod1.getCategoria().add(cat2);
+        prod2.getCategoria().add(cat1);
+        prod3.getCategoria().add(cat3);
+        prod4.getCategoria().add(cat2);
+
+        // salvar as associações que fizemos em memoria
+        produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
+
 
         Usuario u1 = new Usuario(null, "Maria Brown", "maria@gmail.com", "988888888", "123456");
         Usuario u2 = new Usuario(null, "Alex Green", "alex@gmail.com", "977777777", "123456");
@@ -57,12 +72,7 @@ public class TestConfig implements CommandLineRunner {
         Pedido p2 = new Pedido(null, Instant.parse("2024-01-01T19:14:04Z"), PedidoStatus.PAGO, u2);
         Pedido p3 = new Pedido(null, Instant.parse("2024-01-02T12:20:02Z"), PedidoStatus.ENVIADO, u1);
 
-        categoriaRepository.saveAll(Arrays.asList(cat1, cat2, cat3));
-
-        produtoRepository.saveAll(Arrays.asList(prod1, prod2, prod3));
-
         repositorioUsuario.saveAll(Arrays.asList(u1, u2, u3));
-
         pedidoRepository.saveAll(Arrays.asList(p1, p2, p3));
 
 
