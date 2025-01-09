@@ -2,6 +2,8 @@ package com.comercio_digital.comercio.entities;
 
 import com.comercio_digital.comercio.enums.PedidoStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -17,7 +19,6 @@ public class Pedido implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     // a partir do Java 8, usamos Instant em vez de Date
     // formatacao da data no padrao ISO
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
@@ -28,16 +29,14 @@ public class Pedido implements Serializable {
     private Usuario cliente;
 
 
-
     @OneToMany(mappedBy = "id.pedido")
     private Set<ItemPedido> itens = new HashSet<>();
-
-
     public Set<ItemPedido> getItens() {
         return itens;
     }
 
-
+    @OneToOne(mappedBy = "pedido", cascade = CascadeType.ALL)
+    private Pagamento pagamento;
 
     public Pedido() {}
     public Pedido(Long id, Instant instante, PedidoStatus status, Usuario cliente) {
@@ -84,6 +83,23 @@ public class Pedido implements Serializable {
             this.status = status;
         }
     }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
+    }
+
+    public Double getTotal() {
+        double soma = 0;
+        for (ItemPedido item : itens) {
+            soma += item.getSubTotal();
+        }
+        return soma;
+    }
+
 
     @Override
     public boolean equals(Object o) {

@@ -1,5 +1,6 @@
 package com.comercio_digital.comercio.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -23,6 +24,18 @@ public class Produto {
             // define a chave estrangeira da outra entidade
             inverseJoinColumns = @JoinColumn(name = "id_categoria"))
     private Set<Categoria> categorias = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.produto")
+    private Set<ItemPedido> itens = new HashSet<>();
+
+    @JsonIgnore
+    public Set<Pedido> getPedidos() {
+        Set<Pedido> set = new HashSet<>();
+        for (ItemPedido item : itens) {
+            set.add(item.getPedido());
+        }
+        return set;
+    }
 
     public Produto() {}
     public Produto(Long id, String nome, String descricao, Double preco, String imgURL) {
